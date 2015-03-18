@@ -2,38 +2,28 @@ Predicting Fuel Efficiency
 ========================================================
 author: Sasmito Adibowo
 date: 17 March 2015
+font-import: http://fonts.googleapis.com/css?family=NTR
+font-family: 'NTR', sans-serif;
 
 
 
-
+Background
+========================================================
 Why Predict?
-========================================================
+
  - New model every year - expensive to re-test
- - Inform consumers
- - Assist car designers & regulators
- - Go Green for Everyone
- 
-How to Predict?
-========================================================
-Reference data from 1974 _Motor Trend_ US magazine.
+ - Inform consumers, car designers, and regulators
+
+How to predict?
+ - Use machine learning techniques
+ - Reference data from 1974 _Motor Trend_ US magazine
  
 
-```r
-data(mtcars)
-engineType <- c("V","S")
-transmissionType <- c("A","M")
-inputData <- mtcars %>% mutate(
-    vs = as.factor(engineType[vs+1]),
-    am = as.factor(transmissionType[am+1]),
-    gear = as.factor(gear),
-    cyl = as.factor(cyl),
-    carb = as.factor(carb))
-```
 
 Prediction Model
 ========================================================
 
-Use machine learning techniques
+Estimate fuel efficiency from engine classifications and a quick performance test.
 
 
 ```r
@@ -48,7 +38,7 @@ modFit <- train(form =
     data=trainingSet)
 ```
 
-We also have a [web-based calculator](http://example.com) to test this model out.
+We also have a [web-based calculator](http://example.com) to try out the model.
 
 
 Prediction Accuracy
