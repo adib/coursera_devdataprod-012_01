@@ -1,37 +1,81 @@
-Presentation
+Predicting Fuel Efficiency
 ========================================================
-author: 
-date: 
+author: Sasmito Adibowo
+date: 17 March 2015
 
-First Slide
+
+
+
+Why Predict?
+========================================================
+ - New model every year - expensive to re-test
+ - Inform consumers
+ - Assist car designers & regulators
+ - Go Green for Everyone
+ 
+How to Predict?
+========================================================
+Reference data from 1974 _Motor Trend_ US magazine.
+ 
+
+```r
+data(mtcars)
+engineType <- c("V","S")
+transmissionType <- c("A","M")
+inputData <- mtcars %>% mutate(
+    vs = as.factor(engineType[vs+1]),
+    am = as.factor(transmissionType[am+1]),
+    gear = as.factor(gear),
+    cyl = as.factor(cyl),
+    carb = as.factor(carb))
+```
+
+Prediction Model
 ========================================================
 
-For more details on authoring R presentations click the
-**Help** button on the toolbar.
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-Slide With Code
-========================================================
+Use machine learning techniques
 
 
 ```r
-summary(cars)
+set.seed(42)
+indexTraining <- createDataPartition(
+    inputData$mpg, p=0.7, list=TRUE)$Resample1
+trainingSet <- inputData[indexTraining,] 
+
+modFit <- train(form =
+    mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb,
+    method="rf", trControl = trainControl(method="cv"), 
+    data=trainingSet)
 ```
 
-```
-     speed           dist       
- Min.   : 4.0   Min.   :  2.00  
- 1st Qu.:12.0   1st Qu.: 26.00  
- Median :15.0   Median : 36.00  
- Mean   :15.4   Mean   : 42.98  
- 3rd Qu.:19.0   3rd Qu.: 56.00  
- Max.   :25.0   Max.   :120.00  
-```
+We also have a [web-based calculator](http://example.com) to test this model out.
 
-Slide With Plot
+
+Prediction Accuracy
+========================================================
+left: 70%
+
+![plot of chunk unnamed-chunk-4](Presentation-figure/unnamed-chunk-4-1.png) 
+
+***
+
+
+Estimated accuracy based on reference data:
+
+# 88%
+
+
+Future Works
 ========================================================
 
-![plot of chunk unnamed-chunk-2](Presentation-figure/unnamed-chunk-2-1.png) 
+ - More research needed
+    - Prototype calculator based on car models from 1973 - 1974
+    - Gauge usefullness of model
+    - Evaluate relevance to data available for recent cars
+    - Create model for TCO and not just MPG
+ - Potential applications
+    - B2B: help car makers design more fuel efficient cars.
+    - B2G: help governments estimate carbon tax required for a given car model
+    - B2C: help consumers make an informed buying decision
+ - Funding please
+ 

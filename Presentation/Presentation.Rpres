@@ -1,28 +1,100 @@
-Presentation
+Predicting Fuel Efficiency
 ========================================================
-author: 
-date: 
+author: Sasmito Adibowo
+date: 17 March 2015
 
-First Slide
+```{r,echo=FALSE}
+library(dplyr)
+library(caret)
+library(doMC)
+library(ggplot2)
+registerDoMC(cores = 4)
+```
+
+
+Why Predict?
+========================================================
+ - New model every year - expensive to re-test
+ - Inform consumers
+ - Assist car designers & regulators
+ - Go Green for Everyone
+ 
+How to Predict?
+========================================================
+Reference data from 1974 _Motor Trend_ US magazine.
+ 
+```{r}
+data(mtcars)
+engineType <- c("V","S")
+transmissionType <- c("A","M")
+inputData <- mtcars %>% mutate(
+    vs = as.factor(engineType[vs+1]),
+    am = as.factor(transmissionType[am+1]),
+    gear = as.factor(gear),
+    cyl = as.factor(cyl),
+    carb = as.factor(carb))
+```
+
+Prediction Model
 ========================================================
 
-For more details on authoring R presentations click the
-**Help** button on the toolbar.
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-Slide With Code
-========================================================
+Use machine learning techniques
 
 ```{r}
-summary(cars)
+set.seed(42)
+indexTraining <- createDataPartition(
+    inputData$mpg, p=0.7, list=TRUE)$Resample1
+trainingSet <- inputData[indexTraining,] 
+
+modFit <- train(form =
+    mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb,
+    method="rf", trControl = trainControl(method="cv"), 
+    data=trainingSet)
+
+
 ```
 
-Slide With Plot
+We also have a [web-based calculator](http://example.com) to test this model out.
+
+
+Prediction Accuracy
 ========================================================
+left: 70%
 
 ```{r, echo=FALSE}
-plot(cars)
+testingSet <- inputData[-indexTraining,]
+testPrediction <- predict(modFit,testingSet)
+residPct <- (testingSet$mpg - testPrediction) / testingSet$mpg * 100
+qplot(testingSet$mpg, residPct, xlab="Test Set (mpg)", 
+      ylab="Prediction Error (Percent)", geom="point") + 
+    geom_abline(intercept=0, slope=0) + ylim(-25,25) + geom_point(size=4)
+
+avgError <- function(observed,expected) {
+    mean(abs(observed-expected) / observed)
+}
+model <- list(modFit = modFit,accuracy = 1 - avgError(testingSet$mpg,testPrediction))
+saveRDS(model,"model.rds")
 ```
+
+***
+
+
+Estimated accuracy based on reference data:
+
+# `r round(model$accuracy*100)`%
+
+
+Future Works
+========================================================
+
+ - More research needed
+    - Prototype calculator based on car models from 1973 - 1974
+    - Gauge usefullness of model
+    - Evaluate relevance to data available for recent cars
+    - Create model for TCO and not just MPG
+ - Potential applications
+    - B2B: help car makers design more fuel efficient cars.
+    - B2G: help governments estimate carbon tax required for a given car model
+    - B2C: help consumers make an informed buying decision
+ - Funding please
+ 

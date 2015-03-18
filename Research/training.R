@@ -1,12 +1,12 @@
 library(dplyr)
 library(caret)
 library(doMC)
+library(ggplot2)
 registerDoMC(cores = 4)
 
 data(mtcars)
 engineType <- c("V","S")
 transmissionType <- c("A","M")
-
 inputData <- mtcars %>% mutate(
     vs = as.factor(engineType[vs+1]),
     am = as.factor(transmissionType[am+1]),
@@ -37,3 +37,16 @@ model <- list(modFit = modFit,accuracy = 1 - avgError(testingSet$mpg,testPredict
 saveRDS(model,"model.rds")
 
 model$accuracy
+
+resid <- testingSet$mpg - testPrediction
+qplot(testingSet$mpg,resid,xlab="Test Set (mpg)", ylab="Residual") + geom_point() + geom_abline(intercept=0,slope=0)
+
+qplot(testingSet$mpg,resid,xlab="Test Set (mpg)", ylab="Residual") + geom_abline(intercept=0,slope=0)
+
+residPct <- (testingSet$mpg - testPrediction) / testingSet$mpg * 100
+
+qplot(testingSet$mpg,residPct,xlab="Test Set (mpg)", ylab="Prediction Error (Percent)") + geom_abline(intercept=0,slope=0) + ylim(-25,25)
+
+# todo: show this plot in the presentation  -- maybe even re-run the model in the presentation.
+qplot(testingSet$mpg,residPct,xlab="Test Observations (mpg)", ylab="Prediction Error (Percent)") + geom_abline(intercept=0,slope=0) + ylim(-25,25)
+
