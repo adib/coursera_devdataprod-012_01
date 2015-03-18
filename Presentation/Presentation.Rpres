@@ -1,9 +1,8 @@
+
 Predicting Fuel Efficiency
 ========================================================
 author: Sasmito Adibowo
 date: 17 March 2015
-font-import: http://fonts.googleapis.com/css?family=NTR
-font-family: 'NTR', sans-serif;
 
 ```{r,echo=FALSE}
 library(dplyr)
@@ -49,13 +48,11 @@ trainingSet <- inputData[indexTraining,]
 
 modFit <- train(form =
     mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb,
-    method="rf", trControl = trainControl(method="cv"), 
-    data=trainingSet)
-
+    method="rf", trControl = trainControl( method="cv"), data=trainingSet)
 
 ```
 
-We also have a [web-based calculator](http://example.com) to try out the model.
+We also have a **[web-based calculator](http://example.com)** to try out the model.
 
 
 Prediction Accuracy
