@@ -13,7 +13,8 @@ shinyUI(fluidPage(
   titlePanel("Estimate Fuel Efficiency"),
     fluidRow(
         column(width=12,
-               p("This page will estimate a car's fuel efficiency with ",textOutput("predAccuracy",inline=TRUE)," expected accuracy given the car's specifications.")
+               p("This page will estimate a car's fuel efficiency with ",textOutput("predAccuracy",inline=TRUE)," expected accuracy given the car's specifications."),
+               p("Enter the car's engine parameter in the space below and get an estimate of its fuel efficiency at the bottom of this page.")
                )
     ),
     fluidRow(
@@ -22,15 +23,15 @@ shinyUI(fluidPage(
                            choices = list("4" = 4, "6" = 6,
                                           "8" = 8), selected = 6),
                numericInput("disp", label = p("Displacement (cu.in.)"), 
-                            value = 160),
+                            value = 160,min=0,step=10),
                numericInput("hp", label = p("Gross horsepower"), 
-                            value = 110),
+                            value = 110,min=0,step=10),
                numericInput("drat", label = p("Rear axle ratio"), 
-                            value = 3.90),
+                            value = 3.90,min=0,step=0.2),
                numericInput("wt", label = p("Weight (lb/1000)"), 
-                            value = 2.620),
-               numericInput("qsec", label = p("1/4 mile time"), 
-                            value = 16.46),
+                            value = 2.620,min=0,step=0.1),
+               numericInput("qsec", label = p("1/4 mile time in seconds"), 
+                            value = 16.46,min=0,step=1),
                selectInput("vs", label = p("Engine Type"), 
                            choices = list("V" = "V", "Straight" = "S"), 
                            selected = "V"),
@@ -47,7 +48,9 @@ shinyUI(fluidPage(
     ),
     fluidRow(
         column(width=12,
-               p("Based on the above parameters, the engine's fuel efficiency should be around ",strong(textOutput("predMPG",inline=TRUE)), " miles per gallon.")
+               p("Based on the above parameters, the car's fuel efficiency should be around ",strong(textOutput("predMPG",inline=TRUE)), " miles per gallon."),
+               p("Reference data obtained from 1974 ",em("Motor Trend")," US magazine.")
+               
         )
     )
 ))
