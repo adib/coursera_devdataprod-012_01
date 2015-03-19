@@ -36,7 +36,7 @@ modFit <- train(form =
     method="rf", trControl = trainControl( method="cv"), data=trainingSet)
 ```
 
-We also have a **[web-based calculator](http://example.com)** to try out the model.
+We also have a **[web-based calculator](http://adib.shinyapps.io/devdataprod-012_01)** to try out the model.
 
 
 Prediction Accuracy

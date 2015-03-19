@@ -1,5 +1,5 @@
-library(nnet)
 library(caret)
+library(randomForest)
 library(shiny)
 
 shinyServer(function(input, output) {
