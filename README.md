@@ -13,9 +13,9 @@ The run-time for the assignment can be viewed from the following links:
 
 This repository is divided into three mini-projects:
 
- - Folder `Presentation` is the _pitch_ part of the assignment that describes the underlying idea for the application and containing a link to the corresponding web application.
+ - Folder `Presentation` is the _pitch_ part of the assignment that describes the underlying idea for the application and containing a link to the corresponding web application. The R script inside this presentation trains the model and saves it into a file for further use in the web application.
  - Folder `WebApp` contains the source files for the web application that runs the model and makes it accessible through a web browser.
- - Folder `Research` contains the various tidbits of R code used to develop the idea and machine learning model.
+ - Folder `Research` contains the various tidbits of R code used to develop the idea and machine learning model. 
 
 ## Copyright
 
